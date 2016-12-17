@@ -8,6 +8,7 @@ namespace rawfx {
 namespace core {
 
 class engine {
+public:
 
     void kill_me() {
         _kill = true;
