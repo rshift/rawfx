@@ -8,6 +8,8 @@ find_package(GLEW REQUIRED)
 
 set(SOURCE_FILES
 
+    include/rawfx/dev/assert.h
+
     include/rawfx/core/event.h
     include/rawfx/core/handler.h
     include/rawfx/core/composite.h
