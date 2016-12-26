@@ -4,7 +4,6 @@
 #include <memory>
 
 namespace rawfx {
-namespace core {
 
 // fwd decl
 class engine;
@@ -24,5 +23,4 @@ private:
     handler(const handler& h) = default;
 };
 
-}
 }

@@ -2,9 +2,5 @@
 #include <rawfx/core/handler.h>
 
 namespace rawfx {
-namespace core {
 
-
-
-}
 }

@@ -1,8 +1,6 @@
 #include <rawfx/core/engine.h>
 
 namespace rawfx {
-namespace core {
-
 
 void engine::kill_me() {
     _kill = true;
@@ -40,5 +38,3 @@ engine& engine::name(const char* n) {
 
 
 }
-}
-

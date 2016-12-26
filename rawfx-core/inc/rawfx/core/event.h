@@ -3,11 +3,9 @@
 #include <chrono>
 
 namespace rawfx {
-namespace core {
 
 enum event_type {
     ATTACH,
-    DETACH,
     RENDER,
     PROCESS,
     INPUT
@@ -37,6 +35,4 @@ private:
 
 //};
 
-
-}
 }

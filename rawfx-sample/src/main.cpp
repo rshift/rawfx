@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include <rawfx/core/engine.h>
-#include <rawfx/core/composite.h>
+#include <rawfx/comp/composite.h>
 #include <rawfx/comp/background.h>
 
 
@@ -28,10 +28,10 @@
 //    std::unique_ptr<T> _ptr;
 //};
 
-void rawfx_init(rawfx::core::engine& e) {
+void rawfx_init(rawfx::engine& e) {
 
-    e.name("rawfx-sample").root((new rawfx::core::composite())->
-        add(new rawfx::comp::background(rawfx::comp::background::color_type::BLACK))
+    e.name("rawfx-sample").root((new rawfx::composite())->
+        add(new rawfx::background(rawfx::background::color_type::BLACK))
     );
 }
 
@@ -67,7 +67,7 @@ int main(int argc, const char* argv[]) {
     int exit_code = -1;
     try {
 
-        rawfx::core::engine e;
+        rawfx::engine e;
         rawfx_init(e);
 
         glfwSetWindowTitle(window, e.name());
@@ -75,8 +75,8 @@ int main(int argc, const char* argv[]) {
 
         while (!glfwWindowShouldClose(window)) {
 
-            e.handle(rawfx::core::event(rawfx::core::PROCESS));
-            e.handle(rawfx::core::event(rawfx::core::RENDER));
+            e.handle(rawfx::event(rawfx::PROCESS));
+            e.handle(rawfx::event(rawfx::RENDER));
             glfwSwapBuffers(window);
             glfwPollEvents();
         }

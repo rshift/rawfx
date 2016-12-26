@@ -2,8 +2,6 @@
 
 
 namespace rawfx {
-namespace defs {
-
 
 loader::entry_coords loader::find(const void* dp) {
     auto found = _entries.find(dp);
@@ -43,8 +41,4 @@ bool loader::unload(entry& e, const void* def) {
     _entries.erase(def);
 }
 
-
-
-
-}
 }

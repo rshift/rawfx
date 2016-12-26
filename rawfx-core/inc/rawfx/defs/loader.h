@@ -21,7 +21,6 @@
 #include <memory>
 
 namespace rawfx {
-namespace defs {
 
 template <typename T>
 class restore_guard {
@@ -206,5 +205,4 @@ private:
 
 };
 
-}
 }

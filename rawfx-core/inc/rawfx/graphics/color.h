@@ -1,8 +1,6 @@
 #pragma once
 
 namespace rawfx {
-namespace graphics {
-
 
 template <typename T>
 struct rgba {
@@ -40,5 +38,4 @@ template <typename T> const color<T> color<T>::BLUE =   color<rgba<typename T::c
 template <typename T> const color<T> color<T>::WHITE =  color<rgba<typename T::component_type>>(1.f, 1.f, 1.f, 1.f);
 template <typename T> const color<T> color<T>::BLACK =  color<rgba<typename T::component_type>>(0.f, 0.f, 0.f, 1.f);
 
-}
 }

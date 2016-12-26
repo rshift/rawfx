@@ -1,8 +1,8 @@
 #include <catch.hpp>
 
-#include <rawfx/core/composite.h>
+#include <rawfx/comp/composite.h>
 
-using namespace ::rawfx::core;
+using namespace rawfx;
 
 class test_helper {
 public:
@@ -46,7 +46,7 @@ TEST_CASE("MUST detach and remove killed handler", "[composite]") {
     cmp.add(new test_handler(helper));
     cmp.on(event(ATTACH), eng);
 
-    REQUIRE( helper.events == events({ATTACH, DETACH}));
+    REQUIRE( helper.events == events({ATTACH}));
     REQUIRE( cmp.empty() );
 
 }
@@ -60,10 +60,9 @@ TEST_CASE("MUST forward events", "[composite]") {
 
     cmp.add(new test_handler(helper));
     cmp.on(event(ATTACH), eng);
-    cmp.on(event(DETACH), eng);
     cmp.on(event(INPUT), eng);
 
-    REQUIRE( helper.events == events({ATTACH, DETACH, INPUT}) );
+    REQUIRE( helper.events == events({ATTACH, INPUT}) );
 
 }
 
@@ -103,6 +102,6 @@ TEST_CASE("MUST send DETACH on destruction if ATTACH was called", "[composite]")
         cmp.on(event(ATTACH), eng);
     }
 
-    REQUIRE( helper.events == events({ATTACH, DETACH}) );
+    REQUIRE( helper.events == events({ATTACH}) );
 
 }

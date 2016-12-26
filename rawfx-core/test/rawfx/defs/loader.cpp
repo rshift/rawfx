@@ -2,7 +2,7 @@
 
 #include <rawfx/defs/loader.h>
 
-using rawfx::defs::loader;
+using rawfx::loader;
 
 template <typename T>
 class test_def {
@@ -34,7 +34,7 @@ private:
 
 TEST_CASE("loader must correctly set references", "[loader]") {
 
-    rawfx::defs::loader l;
+    loader l;
 
     test_def<int> d1(123);
     test_def<int> d2(321, &d1);
