@@ -14,9 +14,9 @@ namespace core {
 class composite: public handler {
 public:
 
-    virtual ~composite();
+//    virtual ~composite();
     virtual void on(const event& evt, engine& eng);
-    void add(handler* h);
+    composite* add(handler* h);
 
     bool empty() const;
 

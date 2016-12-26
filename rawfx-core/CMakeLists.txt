@@ -1,35 +1,43 @@
 cmake_minimum_required(VERSION 3.6)
 project(rawfx-core)
 
-set(CMAKE_CXX_STANDARD 11)
-
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
-
 set(SOURCE_FILES
 
-    include/rawfx/dev/assert.h
+    inc/rawfx/dev/assert.h
 
-    include/rawfx/core/event.h
-    include/rawfx/core/handler.h
-    include/rawfx/core/composite.h
-    include/rawfx/core/engine.h
-
+    inc/rawfx/core/event.h
     src/rawfx/core/event.cpp
+
+    inc/rawfx/core/handler.h
+    src/rawfx/core/handler.cpp
+
+    inc/rawfx/core/composite.h
     src/rawfx/core/composite.cpp
+
+    inc/rawfx/core/engine.h
     src/rawfx/core/engine.cpp
 
+    inc/rawfx/graphics/color.h
+
+    inc/rawfx/comp/background.h
+    src/rawfx/comp/background.cpp
+
+
+    inc/rawfx/defs/loader.h
+    src/rawfx/defs/loader.cpp
+
     )
-include_directories(include "${GLEW_INCLUDE_DIRS}" "${OPENGL_INCLUDE_DIR}")
 
 add_library(rawfx-core ${SOURCE_FILES})
-target_link_libraries(rawfx-core ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARY})
+target_link_libraries(rawfx-core "${OPENGL_gl_LIBRARY}" "${GLEW_LIBRARY}")
 
-add_executable(rawfx-core_test ${SOURCE_FILES}
+add_executable(rawfx-core_test
     test/main.cpp
     test/rawfx/core/composite.cpp
+    test/rawfx/defs/loader.cpp
     )
 target_include_directories(rawfx-core_test PUBLIC test ../thirdparty/Catch/single_include)
+target_link_libraries(rawfx-core_test rawfx-core)
 
 enable_testing()
 add_test(NAME rawfx-core_test COMMAND rawfx-core_test)
