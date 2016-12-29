@@ -1,6 +1,7 @@
 #pragma once
 
 #include <rawfx/core/handler.h>
+#include <rawfx/custom.h>
 
 namespace rawfx {
 

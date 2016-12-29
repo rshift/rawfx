@@ -1,21 +1,5 @@
 #pragma once
 
-
-/*
- *
- * 1. Must disallow unloading of used objects
- * 2. Correct order of unloading when destructing
- * 3. Automatically unload dependency objects which wasn't loaded explicitly
- *
- * Provided functions
- *
- * load
- * unload
- * unload_all
- *
- */
-
-
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
@@ -54,8 +38,8 @@ public:
         }
 
         const value_type* get() const {
-            def_entry<T>* e = dynamic_cast<def_entry<T>*>(_l.find(&_def));
-            return e != nullptr ? &e->value_type : nullptr;
+            def_entry<T>* e = dynamic_cast<def_entry<T>*>(_l.find(&_def).second);
+            return e != nullptr ? &e->value : nullptr;
         }
 
         const value_type& load() {
@@ -115,13 +99,8 @@ public:
 
     };
 
-    loader(loader* p = nullptr) : _parent(p) {
-    }
-
-    ~loader() {
-        unload_all();
-    }
-
+    loader(loader* p = nullptr);
+    ~loader();
 
     template <typename T>
     def_actions<T> of(const T& def) {
@@ -133,39 +112,10 @@ public:
         return def_actions<T>(*const_cast<loader*>(this), def);
     }
 
-    void unload_all() {
+    size_t unload_all();
 
-        //while (_entries.begin() != _entries.end()) {
-
-        // TODO implement
-
-        // recursive
-        //
-        // bool force_unload(const T& def) {
-        //   find entry by &def only in _entries of this loader (i.e. not using find)
-        //   if not found return false
-        //
-        //   for (key in entry->referenced_by)
-        //     if (!force_unload(ptr)
-        //       throw logic_exception("ptr is referenced externally");
-        //   }
-        //   unload(def);
-        // }
-        //
-        // unload_all impl:
-        //
-        // while (!_entries.empty()) {
-        //  if (!force_unload(_entries.first()) {
-        //    throw logic_exception("ptr is referenced externally");
-        //  }
-        // }
-
-
-    }
-
-    loader* parent() const {
-        return _parent;
-    }
+    loader* parent();
+    void parent(loader* p);
 
 private:
 
@@ -194,11 +144,27 @@ private:
 
 
     typedef std::pair<loader*, entry*> entry_coords;
-    typedef std::pair<const loader*, const entry*> const_entry_coords;
+
+    template <bool unload_this>
+    void unload_refs(entry& e, const void* def) {
+        e.unload(*this, def);
+        for (auto it = e.references.begin(); it != e.references.end(); it++) {
+            const void* ref_def = *it;
+            entry_coords found = find(ref_def);
+            if (found.first == nullptr) {
+                continue;
+            }
+
+            found.second->referenced_by.erase(def);
+            if (unload_this || found.first != this) {
+                found.first->unload(*found.second, ref_def);
+            }
+        }
+    }
 
     entry_coords find(const void* dp);
-    const_entry_coords find(const void* dp) const;
     bool unload(entry& e, const void* def);
+    bool unload_with_refs(entry& e, const void* def);
 
     std::unordered_map<const void*, std::unique_ptr<entry>> _entries;
     loader* _parent;

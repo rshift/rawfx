@@ -9,7 +9,6 @@ set(SOURCE_FILES
     src/rawfx/core/event.cpp
 
     inc/rawfx/core/handler.h
-    src/rawfx/core/handler.cpp
 
     inc/rawfx/core/engine.h
     src/rawfx/core/engine.cpp
@@ -21,6 +20,9 @@ set(SOURCE_FILES
 
     inc/rawfx/comp/background.h
     src/rawfx/comp/background.cpp
+
+    inc/rawfx/comp/fps_counter.h
+    src/rawfx/comp/fps_counter.cpp
 
     inc/rawfx/defs/loader.h
     src/rawfx/defs/loader.cpp
@@ -34,6 +36,7 @@ add_executable(rawfx-core_test
     test/main.cpp
     test/rawfx/comp/composite.cpp
     test/rawfx/defs/loader.cpp
+    test/rawfx/custom.h
     )
 target_include_directories(rawfx-core_test PUBLIC test ../thirdparty/Catch/single_include)
 target_link_libraries(rawfx-core_test rawfx-core)

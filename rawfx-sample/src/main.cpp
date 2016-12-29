@@ -7,29 +7,7 @@
 #include <rawfx/comp/composite.h>
 #include <rawfx/comp/background.h>
 
-
-//template <typename T>
-//class builder {
-//public:
-
-//    template <typename ...Args>
-//    builder(Args&& ...args) : _ptr(new T(std::forward<Args>(args)...)) {
-//    }
-
-//    T& ref() {
-//        return *_ptr.get();
-//    }
-
-//    T& build() {
-//        return *_ptr.release();
-//    }
-
-//private:
-//    std::unique_ptr<T> _ptr;
-//};
-
 void rawfx_init(rawfx::engine& e) {
-
     e.name("rawfx-sample").root((new rawfx::composite())->
         add(new rawfx::background(rawfx::background::color_type::BLACK))
     );
@@ -70,15 +48,20 @@ int main(int argc, const char* argv[]) {
         rawfx::engine e;
         rawfx_init(e);
 
-        glfwSetWindowTitle(window, e.name());
+        if (e.name() != nullptr) {
+            glfwSetWindowTitle(window, e.name());
+        }
         glfwShowWindow(window);
 
         while (!glfwWindowShouldClose(window)) {
+            glfwSetTime(0.0);
 
             e.handle(rawfx::event(rawfx::PROCESS));
             e.handle(rawfx::event(rawfx::RENDER));
             glfwSwapBuffers(window);
             glfwPollEvents();
+
+            e.step(glfwGetTime());
         }
         exit_code = 0;
 
