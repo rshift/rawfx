@@ -28,6 +28,10 @@ public:
         return impl().at(idx);
     }
 
+    bool empty() const {
+        return Size == 0;
+    }
+
     iterator begin() {
         return iterator(impl(), 0);
     }
@@ -100,7 +104,7 @@ struct vec_storage<1, T>: public vec_storage_base<1, T, vec_storage<1, T>> {
     T& at(size_t idx) {
         switch (idx) {
         case 0: return x;
-        default: throw std::out_of_range();
+        default: throw std::out_of_range("vec index out of range");
         }
     }
 
@@ -116,7 +120,7 @@ struct vec_storage<2, T>: public vec_storage_base<2, T, vec_storage<2, T>> {
         switch (idx) {
         case 0: return x;
         case 1: return y;
-        default: throw std::out_of_range();
+        default: throw std::out_of_range("vec index out of range");
         }
     }
 };
@@ -153,7 +157,7 @@ struct vec_storage<4, T>: public vec_storage_base<4, T, vec_storage<4, T>> {
         case 1: return y;
         case 2: return z;
         case 3: return w;
-        default: throw std::out_of_range();
+        default: throw std::out_of_range("vec index out of range");
         }
     }
 

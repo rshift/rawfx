@@ -20,6 +20,14 @@ public:
         return _ptr + _count;
     }
 
+    size_t size() const {
+        return _count;
+    }
+
+    T& operator[](size_t idx) {
+        return _ptr[idx];
+    }
+
 private:
     T _ptr;
     size_t _count;

@@ -14,7 +14,7 @@ template <typename Impl, typename Base>
 class generic_vec: public Base {
 public:
 
-    typedef Impl impl_type;
+    typedef Impl vec_type;
     typedef Base base_type;
 
     typedef typename base_type::value_type value_type;
@@ -45,8 +45,25 @@ public:
         return sqrt(length_square());
     }
 
+    template <typename Vec>
+    value_type scalar_product(const Vec& other) {
+
+        auto r = rawfx::range(other, base_type::size()),
+             b = base_type::begin(), e = base_type::end(),
+             rb = r.begin(), re = r.end();
+
+        value_type product = value_type();
+        while (b != e && rb != re) {
+            product += (*b) * (*rb);
+            ++b;
+            ++rb;
+        }
+        return product;
+    }
+
     template <typename Other>
-    impl_type& operator=(const Other& other) {
+    vec_type& operator=(const Other& other) {
+
         auto r = rawfx::range(other, base_type::size()),
             b = base_type::begin(), e = base_type::end(),
             rb = r.begin(), re = r.end();
@@ -64,21 +81,11 @@ public:
 
     template <typename Other>
     bool operator==(const Other& other) const {
-        auto r = rawfx::range(other, base_type::size()),
-            b = base_type::begin(), e = base_type::end(),
-            rb = r.begin(), re = r.end();
-        while (b != e) {
-            if (rb == re) {
-                return false;
-            }
-            if (*b == *rb) {
-                ++b;
-                ++rb;
-            } else {
-                return false;
-            }
+        auto r = rawfx::range(other, base_type::size());
+        if (base_type::size() != r.size()) {
+            return false;
         }
-        return rb == re;
+        return std::equal(base_type::begin(), base_type::end(), r.begin());
     }
 
     template <typename Other>
@@ -86,59 +93,59 @@ public:
         return !operator==(other);
     }
 
-    impl_type& negate() {
+    vec_type& negate() {
         std::transform(base_type::begin(), base_type::end(), base_type::begin(), std::negate<value_type>());
         return as_vec();
     }
 
-    impl_type& operator-() const {
-        return impl_type(as_vec()).negate();
+    vec_type operator-() const {
+        return vec_type(as_vec()).negate();
     }
 
     template <typename Other>
-    impl_type& operator+=(const Other& other) {
+    vec_type& operator+=(const Other& other) {
         return transform(other, std::plus<value_type>());
     }
 
     template <typename Other>
-    impl_type& operator-=(const Other& other) {
+    vec_type& operator-=(const Other& other) {
         return transform(other, std::minus<value_type>());
     }
 
     template <typename Other>
-    impl_type& operator*=(const Other& other) {
+    vec_type& operator*=(const Other& other) {
         return transform(other, std::multiplies<value_type>());
     }
 
     template <typename Other>
-    impl_type& operator/=(const Other& other) {
+    vec_type& operator/=(const Other& other) {
         return transform(other, std::divides<value_type>());
     }
 
     template <typename Other>
-    impl_type operator+(const Other& other) const {
-        return impl_type(as_vec()) += other;
+    vec_type operator+(const Other& other) const {
+        return vec_type(as_vec()) += other;
     }
 
     template <typename Other>
-    impl_type operator-(const Other& other) const {
-        return impl_type(as_vec()) -= other;
+    vec_type operator-(const Other& other) const {
+        return vec_type(as_vec()) -= other;
     }
 
     template <typename Other>
-    impl_type operator*(const Other& other) const {
-        return impl_type(as_vec()) *= other;
+    vec_type operator*(const Other& other) const {
+        return vec_type(as_vec()) *= other;
     }
 
     template <typename Other>
-    impl_type operator/(const Other& other) const {
-        return impl_type(as_vec()) /= other;
+    vec_type operator/(const Other& other) const {
+        return vec_type(as_vec()) /= other;
     }
 
 protected:
 
     template <typename Other, typename Func>
-    impl_type& transform(const Other& other, Func func) {
+    vec_type& transform(const Other& other, Func func) {
         auto i = base_type::begin();
         auto r = rawfx::range(other, base_type::size());
         rawfx::transform(i, base_type::end(), r.begin(), r.end(), i, func);
@@ -147,12 +154,12 @@ protected:
 
 private:
 
-    const impl_type& as_vec() const {
-        return *static_cast<const impl_type*>(this);
+    const vec_type& as_vec() const {
+        return *static_cast<const vec_type*>(this);
     }
 
-    impl_type& as_vec() {
-        return *static_cast<impl_type*>(this);
+    vec_type& as_vec() {
+        return *static_cast<vec_type*>(this);
     }
 
 };
