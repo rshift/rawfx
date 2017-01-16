@@ -61,7 +61,7 @@ int main(int argc, const char* argv[]) {
             glfwSwapBuffers(window);
             glfwPollEvents();
 
-            e.step(glfwGetTime());
+            //e.step(glfwGetTime());
         }
         exit_code = 0;
 

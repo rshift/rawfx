@@ -98,8 +98,8 @@ TEST_CASE("unload_all must return count of references objects which cant be remo
 TEST_CASE("unload order must follow dependency graph", "[loader]") {
 
     // d1 <- d2 <- d4
-    //  \
-    //   d3
+    //  |
+    //  d3
 
     test_def<int> d1(123), d2(321, &d1), d3(444, &d1), d4(555, &d2);
 

@@ -9,7 +9,7 @@ namespace rawfx {
 template <typename T>
 class restore_guard {
 public:
-    restore_guard(T& ref, const T& value) : _ref(ref), initial(ref) {
+    restore_guard(T& ref, const T& value) : initial(ref), _ref(ref) {
         _ref = value;
     }
 

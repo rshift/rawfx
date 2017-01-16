@@ -27,6 +27,12 @@ set(SOURCE_FILES
     inc/rawfx/defs/loader.h
     src/rawfx/defs/loader.cpp
 
+    inc/rawfx/util/random_access_iterator.h
+    inc/rawfx/util/range.h
+    inc/rawfx/util/algorithm.h
+    inc/rawfx/math/generic_vec.h
+    inc/rawfx/math/vec.h
+
     )
 
 add_library(rawfx-core ${SOURCE_FILES})
@@ -36,7 +42,8 @@ add_executable(rawfx-core_test
     test/main.cpp
     test/rawfx/comp/composite.cpp
     test/rawfx/defs/loader.cpp
-    test/rawfx/custom.h
+    test/rawfx/util/range.cpp
+    test/rawfx/math/vec.cpp
     )
 target_include_directories(rawfx-core_test PUBLIC test ../thirdparty/Catch/single_include)
 target_link_libraries(rawfx-core_test rawfx-core)
